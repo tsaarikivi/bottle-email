@@ -72,23 +72,26 @@ export const newBottle = functions
       }: { email: string; text: string; time: string } = req.body;
 
       if (!email || !text || !time) {
-        res.status(422).send('Invalid arguments.');
+        return res.status(422).send('Invalid arguments.');
       }
 
       const date = new Date(time);
 
       if (date < new Date()) {
-        res.status(400).send('Invalid time.');
+        return res.status(400).send('Invalid time.');
       }
 
       const snapshot = await bottlesRef
         .where('email', '==', email)
         .where('status', '==', 'unconfirmed')
+        .limit(3)
         .select()
         .get();
 
       if (snapshot.size > 2) {
-        res.status(451).send('Too many unconfirmed.');
+        return res
+          .status(451)
+          .send('Too many unconfirmed bottles. Check your email!');
       }
 
       const timestamp = admin.firestore.Timestamp.fromDate(date);
@@ -127,7 +130,7 @@ export const newBottle = functions
         }
       });
 
-      res.status(200).send('Bottle created!');
+      return res.status(200).send('Bottle created!');
     });
   });
 
@@ -138,7 +141,7 @@ export const confirmBottle = functions
       const { id }: { id: string } = req.query;
 
       if (!id) {
-        res.status(422).send('Invalid arguments.');
+        return res.status(422).send('Invalid arguments.');
       }
 
       const ref = bottlesRef.doc(id);
@@ -146,7 +149,7 @@ export const confirmBottle = functions
       const doc = await ref.get();
 
       if (!doc.exists) {
-        res.status(400).send('Invalid document.');
+        return res.status(400).send('Invalid document.');
       }
 
       await ref.update({
@@ -154,7 +157,7 @@ export const confirmBottle = functions
         confirmedAt: admin.firestore.Timestamp.now()
       });
 
-      res.status(200).send('Bottle confirmed!');
+      return res.status(200).send('Bottle confirmed!');
     });
   });
 

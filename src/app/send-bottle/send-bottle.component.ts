@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material';
 export class SendBottleComponent implements OnInit {
   form: FormGroup;
   status = 'writing';
+  startDate: Date;
 
   constructor(
     private http: HttpClient,
@@ -19,6 +20,7 @@ export class SendBottleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.startDate = this.startDateFactory();
     this.form = this.formFactory();
   }
 
@@ -44,7 +46,7 @@ export class SendBottleComponent implements OnInit {
       this.status = 'success';
     } catch (err) {
       console.error(err);
-      this.snackBar.open(err.message, null, {
+      this.snackBar.open(err.error, null, {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         duration: 5000,
@@ -52,6 +54,12 @@ export class SendBottleComponent implements OnInit {
       });
       this.status = 'writing';
     }
+  }
+
+  private startDateFactory() {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    return date;
   }
 
   private formFactory() {

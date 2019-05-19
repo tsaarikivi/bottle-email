@@ -1,43 +1,62 @@
-<mat-card *ngIf="status === 'writing'">
-  <mat-card-title>Send a message to your future self!</mat-card-title>
-  <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="handleSubmit()">
-      <mat-form-field appearance="outline">
-        <mat-label>Message</mat-label>
-        <textarea matInput formControlName="text"></textarea>
-      </mat-form-field>
+<div class="content-container">
+  <h1>Bottle Email</h1>
 
-      <mat-form-field appearance="standard">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email" />
-      </mat-form-field>
+  <mat-card *ngIf="status === 'writing'">
+    <mat-card-title>Ship a Bottle to your future self!</mat-card-title>
+    <mat-card-content>
+      <img
+        src="https://media.giphy.com/media/xTiTnqZw2oni0yN25G/giphy.gif"
+        alt="bottle"
+      />
+      <form [formGroup]="form" (ngSubmit)="handleSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Message in the bottle</mat-label>
+          <textarea matInput formControlName="text"></textarea>
+        </mat-form-field>
 
-      <mat-form-field appearance="standard">
-        <mat-label>Date</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="time" />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Your email</mat-label>
+          <input matInput formControlName="email" type="email" />
+        </mat-form-field>
 
-      <button [disabled]="!form.valid" mat-raised-button>
-        Ship the bottle!
-      </button>
-    </form>
-  </mat-card-content>
-</mat-card>
+        <mat-form-field appearance="standard">
+          <mat-label>Future date</mat-label>
+          <input
+            matInput
+            [min]="startDate"
+            [matDatepicker]="picker"
+            formControlName="time"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker [startAt]="startDate"></mat-datepicker>
+        </mat-form-field>
 
-<mat-card *ngIf="status === 'sending'">
-  <mat-card-content>
-    <p>Packing bottles...</p>
-  </mat-card-content>
-</mat-card>
+        <button [disabled]="!form.valid" mat-raised-button color="primary">
+          Ship the bottle!
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 
-<mat-card *ngIf="status === 'success'">
-  <mat-card-title>Confirmation required!</mat-card-title>
-  <mat-card-content>
-    <p>One more thing: Please check your email, to confirm your bottle!</p>
-    <p>Remember to check your spam box.</p>
-    <p>This is for protection from abuse. :)</p>
-    <img src="https://media.giphy.com/media/Yi9JRc1JcJOdq/giphy.gif" />
-  </mat-card-content>
-</mat-card>
+  <mat-card *ngIf="status === 'sending'">
+    <mat-card-content>
+      <p>Packing bottles...</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="status === 'success'">
+    <mat-card-title>Confirmation required!</mat-card-title>
+    <mat-card-content>
+      <p>One more thing: Please check your email, to confirm your bottle!</p>
+      <p>Remember to check your spam box.</p>
+      <p>This is for protection from abuse. :)</p>
+      <img
+        src="https://media.giphy.com/media/Yi9JRc1JcJOdq/giphy.gif"
+        alt="fun"
+      />
+    </mat-card-content>
+  </mat-card>
+</div>
