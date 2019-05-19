@@ -81,6 +81,16 @@ export const newBottle = functions
         res.status(400).send(new Error('Invalid time.'));
       }
 
+      const snapshot = await bottlesRef
+        .where('email', '==', email)
+        .where('status', '==', 'unconfirmed')
+        .select()
+        .get();
+
+      if (snapshot.size > 2) {
+        res.status(451).send(new Error('Too many unconfirmed.'));
+      }
+
       const timestamp = admin.firestore.Timestamp.fromDate(date);
 
       const body: Bottle = {

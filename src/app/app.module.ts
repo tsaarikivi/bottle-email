@@ -9,7 +9,8 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatNativeDateModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSnackBarModule
 } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,7 +31,8 @@ import { SendBottleComponent } from './send-bottle/send-bottle.component';
     MatCardModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-send-bottle',
@@ -11,7 +12,11 @@ export class SendBottleComponent implements OnInit {
   form: FormGroup;
   status = 'writing';
 
-  constructor(private http: HttpClient, private fb: FormBuilder) {}
+  constructor(
+    private http: HttpClient,
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     this.form = this.formFactory();
@@ -39,6 +44,12 @@ export class SendBottleComponent implements OnInit {
       this.status = 'success';
     } catch (err) {
       console.error(err);
+      this.snackBar.open(err.message, null, {
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: 'app-error-snackbar'
+      });
       this.status = 'writing';
     }
   }
