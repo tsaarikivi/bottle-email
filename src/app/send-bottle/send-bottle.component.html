@@ -1,0 +1,43 @@
+<mat-card *ngIf="status === 'writing'">
+  <mat-card-title>Send a message to yourself in the future!</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="handleSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Message</mat-label>
+        <textarea matInput formControlName="text"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="standard">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="time" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <button [disabled]="!form.valid" mat-raised-button>
+        Ship the bottle!
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="status === 'sending'">
+  <mat-card-content>
+    <p>Packing bottles...</p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="status === 'success'">
+  <mat-card-title>Confirmation required!</mat-card-title>
+  <mat-card-content>
+    <p>One more thing: Please check your email, to confirm your bottle!</p>
+    <p>Remember to check your spam box.</p>
+    <p>This is for protection from abuse. :)</p>
+    <img src="https://media.giphy.com/media/RTXssHOXDW0Eg/giphy.gif" />
+  </mat-card-content>
+</mat-card>
