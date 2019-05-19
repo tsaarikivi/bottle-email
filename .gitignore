@@ -11,6 +11,7 @@
 /node_modules
 .firebase/*
 functions/lib
+firebase-debug.log
 
 # profiling files
 chrome-profiler-events.json

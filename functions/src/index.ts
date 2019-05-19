@@ -16,7 +16,7 @@ export const bottleCron = functions
     timeoutSeconds: 540,
     memory: '1GB'
   })
-  .pubsub.schedule('*/5 * * * *')
+  .pubsub.schedule('0 * * * *')
   .onRun(async ctx => {
     const snapshot = await bottlesRef
       .where('status', '==', 'pending')
@@ -45,15 +45,15 @@ function sendEmail(bottle: Bottle) {
   const html = `
   <h4>Hi, it is I, you..</h4>
   <p>${bottle.text}</p>
-  <p>Regards, bottle.</p>
+  <p>Regards, you.</p>
   `;
 
   return sendgrid.send({
     html,
-    subject: 'Your bottle.email from the past',
+    subject: 'Your Bottle Email from the past',
     from: {
       email: 'noreply@bottle.email',
-      name: 'You from the past'
+      name: 'Bottle Email'
     },
     to: {
       email: bottle.email
@@ -72,13 +72,13 @@ export const newBottle = functions
       }: { email: string; text: string; time: string } = req.body;
 
       if (!email || !text || !time) {
-        res.status(422).send(new Error('Invalid arguments.'));
+        res.status(422).send('Invalid arguments.');
       }
 
       const date = new Date(time);
 
       if (date < new Date()) {
-        res.status(400).send(new Error('Invalid time.'));
+        res.status(400).send('Invalid time.');
       }
 
       const snapshot = await bottlesRef
@@ -88,7 +88,7 @@ export const newBottle = functions
         .get();
 
       if (snapshot.size > 2) {
-        res.status(451).send(new Error('Too many unconfirmed.'));
+        res.status(451).send('Too many unconfirmed.');
       }
 
       const timestamp = admin.firestore.Timestamp.fromDate(date);
@@ -109,18 +109,18 @@ export const newBottle = functions
 
       const html = `
       <h4>Confirmation required.</h4>
-      <p>Confirm your bottle.email from this link: <a href="${link}">${link}</a>.</p>
-      <p>You'll recieve your bottle.email at ${date.toUTCString()}.</p>
+      <p>Confirm your Bottle Email from this link: <a href="${link}">${link}</a>.</p>
+      <p>You'll recieve your Bottle Email at ${date.toUTCString()}.</p>
       <p><b>How exciting!</b> 🤩</p>
       <p>Regards, bottle.</p>
     `;
 
       await sendgrid.send({
         html,
-        subject: 'Confirm your bottle.email',
+        subject: 'Confirm your Bottle Email',
         from: {
           email: 'noreply@bottle.email',
-          name: 'bottle.email'
+          name: 'Bottle Email'
         },
         to: {
           email
@@ -138,7 +138,7 @@ export const confirmBottle = functions
       const { id }: { id: string } = req.query;
 
       if (!id) {
-        res.status(422).send(new Error('Invalid arguments.'));
+        res.status(422).send('Invalid arguments.');
       }
 
       const ref = bottlesRef.doc(id);
@@ -146,7 +146,7 @@ export const confirmBottle = functions
       const doc = await ref.get();
 
       if (!doc.exists) {
-        res.status(400).send(new Error('Invalid document.'));
+        res.status(400).send('Invalid document.');
       }
 
       await ref.update({
