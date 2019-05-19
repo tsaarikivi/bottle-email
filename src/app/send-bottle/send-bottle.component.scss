@@ -23,7 +23,7 @@ mat-card {
   min-height: 200px;
   padding: 8px;
   box-sizing: border-box;
-  margin: 8px auto 64px;
+  margin: 8px auto 0;
 }
 
 mat-form-field {
@@ -35,4 +35,13 @@ img {
   width: 100%;
   box-sizing: border-box;
   height: auto;
+}
+
+a {
+  display: block;
+  text-align: center;
+  color: yellow;
+  padding: 4px;
+  box-sizing: border-box;
+  margin: 32px 0 64px;
 }
